@@ -28,10 +28,10 @@ The server processes incoming events, classifies them, filters unnecessary data,
   * WARNING
   * NORMAL
 
-* 🧹 **Event Filtering**
+* **Event Filtering**
   Debug logs are ignored to reduce noise
 
-* 📊 **Live Network Dashboard**
+* **Live Network Dashboard**
   Displays:
 
   * Connected clients
@@ -39,7 +39,7 @@ The server processes incoming events, classifies them, filters unnecessary data,
 
 
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 project/
@@ -53,7 +53,7 @@ project/
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 * Python
 * UDP Socket Programming
@@ -61,7 +61,7 @@ project/
 
 
 
-## 🧪 How It Works
+## How It Works
 
 1. Client generates random system events
 2. Events are serialized and sent via UDP
@@ -73,7 +73,7 @@ project/
 
 
 
-## ▶️ How to Run
+## How to Run
 
 ### 1. Start Server
 
@@ -87,12 +87,12 @@ python server.py
 python client.py
 ```
 
-> ⚠️ Update the server IP in `client.py` before running
-> (`SERVER_IP = "server_ip_here"`)
+Update the server IP in `client.py` before running
+(`SERVER_IP = "server_ip_here"`)
 
 
 
-## 📊 Event Processing Logic
+## Event Processing Logic
 
 * FAILURE → CRITICAL
 * THRESHOLD → WARNING
@@ -101,7 +101,7 @@ python client.py
 
 
 
-## 🔍 Example Behavior
+## Example Behavior
 
 * Client sends: CPU usage high
 * Server classifies: WARNING
@@ -109,7 +109,7 @@ python client.py
 
 
 
-## 📈 Future Improvements
+## Future Improvements
 
 * GUI-based monitoring dashboard
 * TCP + reliability layer

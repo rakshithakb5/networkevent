@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Secure Network Event Monitoring System
 
 ## Features
@@ -143,4 +143,4 @@ Update the server IP in `client.py` before running
 ## ⭐ Note
 
 This project demonstrates practical concepts of distributed systems, unreliable transport (UDP), and real-time event processing.
->>>>>>> 774894d845887ab9f496679061767d2887655156
+

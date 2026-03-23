@@ -24,15 +24,15 @@ All communication between clients and the server is carried out over a secure TC
 ```
 +-------------+        Secure TCP        +----------------------+
 |   Client 1  | -----------------------> |                      |
-+-------------+                         |                      |
-                                       |                      |
-+-------------+        Secure TCP       |        Server        |
-|   Client 2  | ----------------------->|   (Multi-threaded)   |
-+-------------+                         |                      |
-                                       |                      |
-+-------------+        Secure TCP       |                      |
-|   Client N  | ----------------------->|                      |
-+-------------+                         +----------------------+
++-------------+                          |                      |
+                                         |                      |
++-------------+        Secure TCP        |        Server        |
+|   Client 2  | -----------------------> |   (Multi-threaded)   |
++-------------+                          |                      |
+                                         |                      |
++-------------+        Secure TCP        |                      |
+|   Client N  | -----------------------> |                      |
++-------------+                          +----------------------+
 ```
 
 ---
@@ -227,10 +227,4 @@ Rakshitha K.B
 
 This project is developed as part of coursework to demonstrate practical understanding of network programming, secure communication, and system design principles.
 
-
-
-## Tech
-- Python sockets
-- SSL/TLS
-- Threading
 

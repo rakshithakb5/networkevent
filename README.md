@@ -1,147 +1,228 @@
-
 # Secure Network Event Monitoring System
 
-## Features
-- Multi-client TCP system
-- SSL/TLS encryption
-- Event classification
-- Performance monitoring
-- Thread-based concurrency
+## Overview
 
-## Run
-1. Generate SSL cert
-2. Run server
-3. Run multiple clients
+This project presents a secure networked application developed using low-level socket programming in Python. The system simulates a distributed environment where multiple client nodes generate network-related events and transmit them to a centralized server.
 
-## Tech
-- Python sockets
-- SSL/TLS
-- Threading
+All communication between clients and the server is carried out over a secure TCP connection using SSL/TLS. The server is responsible for handling concurrent client connections, processing incoming data, classifying events, and maintaining basic performance metrics.
 
+---
 
-#  Network Event Monitoring System (UDP Based)
+## Objectives
 
-A network-based event simulation system that uses UDP sockets to send, process, and monitor system events in real-time.
+* Implement network communication using TCP sockets
+* Support multiple concurrent client connections
+* Design a structured communication protocol
+* Ensure secure data transmission using SSL/TLS
+* Evaluate system performance under varying loads
+* Handle runtime errors and edge cases effectively
 
-##  Overview
+---
 
-This project simulates a distributed system where multiple clients (nodes) generate events and send them to a central server.
+## System Architecture
 
-The server processes incoming events, classifies them, filters unnecessary data, and displays a live monitoring dashboard.
+```
++-------------+        Secure TCP        +----------------------+
+|   Client 1  | -----------------------> |                      |
++-------------+                         |                      |
+                                       |                      |
++-------------+        Secure TCP       |        Server        |
+|   Client 2  | ----------------------->|   (Multi-threaded)   |
++-------------+                         |                      |
+                                       |                      |
++-------------+        Secure TCP       |                      |
+|   Client N  | ----------------------->|                      |
++-------------+                         +----------------------+
+```
 
-
-
-##  Key Features
-
-* **UDP Socket Communication**
-  Lightweight and fast event transmission using connectionless sockets
-
-* **Distributed Event Simulation**
-  Multiple clients simulate system nodes sending logs
-
-* **Packet Loss Simulation**
-  Random packet drops to mimic real network conditions
-
-* **Event Classification System**
-  Events categorized into:
-
-  * CRITICAL
-  * WARNING
-  * NORMAL
-
-* **Event Filtering**
-  Debug logs are ignored to reduce noise
-
-* **Live Network Dashboard**
-  Displays:
-
-  * Connected clients
-  * Event statistics
-
-
+---
 
 ## Project Structure
 
 ```
-project/
+network-event-monitor/
 │
-├── server.py              # UDP server handling events
-├── client.py              # Event generator (simulated nodes)
-├── config.py              # Network configuration
-├── event_processor.py     # Event classification & filtering
-├── event_format.py        # Serialization / deserialization
+├── server/
+│   ├── server.py
+│   ├── secure_socket.py
+│   ├── event_processor.py
+│   ├── performance.py
+│   ├── config.py
+│
+├── client/
+│   ├── client.py
+│   ├── secure_socket.py
+│
+├── common/
+│   ├── protocol.py
+│
+├── certs/
+│   ├── server.pem
+│   ├── server.key
+│   ├── generate_cert.py
+│
+└── README.md
 ```
 
 ---
 
 ## Technologies Used
 
-* Python
-* UDP Socket Programming
-* JSON (data serialization)
+* Python 3
+* TCP Socket Programming
+* SSL/TLS for secure communication
+* Threading for concurrency
+* JSON for message formatting
 
+---
 
+## Security Implementation
 
-## How It Works
+The system uses SSL/TLS to encrypt communication between clients and the server. A self-signed certificate is generated using the `cryptography` library. The server wraps its socket using an SSL context, and the client establishes a secure connection using the same protocol.
 
-1. Client generates random system events
-2. Events are serialized and sent via UDP
-3. Packet loss is simulated (20%)
-4. Server receives and deserializes events
-5. Events are filtered and processed
-6. Server classifies events and updates stats
-7. Dashboard displays real-time system state
+---
 
+## Communication Protocol
 
+The system uses a lightweight JSON-based protocol for data exchange.
 
-## How to Run
+Example message:
 
-### 1. Start Server
+```
+{
+  "type": "FAILURE",
+  "msg": "Node down"
+}
+```
 
-```bash
+---
+
+## Features
+
+### Multi-Client Support
+
+The server handles multiple clients simultaneously using threading. Each client connection is processed independently.
+
+### Event Classification
+
+Incoming events are categorized into different levels:
+
+* FAILURE → Critical
+* THRESHOLD → Warning
+* INFO → Normal
+
+### Secure Communication
+
+All data transmitted between client and server is encrypted using SSL.
+
+### Performance Monitoring
+
+The server tracks request handling rate (throughput) over time.
+
+### Error Handling
+
+The system accounts for:
+
+* Client disconnections
+* Invalid or malformed data
+* SSL handshake failures
+
+---
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```
+git clone <your-repository-link>
+cd network-event-monitor
+```
+
+---
+
+### 2. Install Dependencies
+
+```
+pip install cryptography
+```
+
+---
+
+### 3. Generate SSL Certificate
+
+```
+cd certs
+python generate_cert.py
+```
+
+---
+
+### 4. Run the Server
+
+```
+cd ../server
 python server.py
 ```
 
-### 2. Start Client
+---
 
-```bash
+### 5. Run Client(s)
+
+```
+cd ../client
 python client.py
 ```
 
-Update the server IP in `client.py` before running
-(`SERVER_IP = "server_ip_here"`)
+Multiple clients can be run in separate terminals to simulate concurrent nodes.
 
+---
 
+## Performance Evaluation
 
-## Event Processing Logic
+| Number of Clients | Observation                          |
+| ----------------- | ------------------------------------ |
+| 1                 | Low load, stable response            |
+| 5                 | Moderate load, consistent throughput |
+| 10                | Increased load, higher CPU usage     |
 
-* FAILURE → CRITICAL
-* THRESHOLD → WARNING
-* INFO → NORMAL
-* DEBUG → Filtered out
+---
 
+## Limitations
 
+* Uses self-signed certificates instead of trusted certificate authorities
+* Command-line interface only (no graphical dashboard)
+* Basic performance metrics without detailed analysis
 
-## Example Behavior
+---
 
-* Client sends: CPU usage high
-* Server classifies: WARNING
-* Dashboard updates in real-time
+## Future Enhancements
 
+* Web-based monitoring dashboard
+* Persistent storage using a database
+* Retry mechanism for failed transmissions
+* Load balancing for improved scalability
 
+---
 
-## Future Improvements
+## Evaluation Mapping
 
-* GUI-based monitoring dashboard
-* TCP + reliability layer
-* Data persistence (logs database)
-* Alert system (email/notifications)
-* Real-time visualization graphs
+| Requirement             | Implementation Details             |
+| ----------------------- | ---------------------------------- |
+| Socket Programming      | TCP sockets used                   |
+| Concurrency             | Multi-threaded server              |
+| Security                | SSL/TLS encryption implemented     |
+| Protocol Design         | JSON-based communication           |
+| Performance Evaluation  | Throughput measurement             |
+| Optimization & Handling | Error handling and stability fixes |
 
+---
 
+## Author
 
+Rakshitha K.B
 
-## ⭐ Note
+---
 
-This project demonstrates practical concepts of distributed systems, unreliable transport (UDP), and real-time event processing.
+## Note
 
+This project is developed as part of coursework to demonstrate practical understanding of network programming, secure communication, and system design principles.

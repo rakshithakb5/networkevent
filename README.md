@@ -60,6 +60,9 @@ network-event-monitor/
 │   ├── server.pem
 │   ├── server.key
 │
+├── .gitignore
+│   ├── certs/
+├
 └── README.md
 ```
 

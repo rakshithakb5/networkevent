@@ -4,6 +4,7 @@
 
 This project presents a secure networked application developed using low-level socket programming in Python. The system simulates a distributed environment where multiple client nodes generate network-related events and transmit them to a centralized server.
 
+<<<<<<< HEAD
 All communication between clients and the server is carried out over a secure TCP connection using SSL/TLS. The server is responsible for handling concurrent client connections, processing incoming data, classifying events, and maintaining basic performance metrics.
 
 ---
@@ -226,3 +227,9 @@ Rakshitha K.B
 ## Note
 
 This project is developed as part of coursework to demonstrate practical understanding of network programming, secure communication, and system design principles.
+=======
+## Tech
+- Python sockets
+- SSL/TLS
+- Threading
+>>>>>>> 91dd1f328ddc6ca980226ea4d8926fcc5fadf8cc

@@ -77,7 +77,7 @@ network-event-monitor/
 
 ## Security Implementation
 
-Secure communication is implemented using SSL/TLS. The server uses a certificate and private key generated via OpenSSL to establish encrypted connections with clients. The Python `ssl` module is used to wrap sockets for secure data transmission.
+Secure communication is implemented using SSL/TLS. The server uses a self -signed certificate and private key generated using OpenSSL to establish encrypted connections with clients. The Python `ssl` module is used to wrap sockets for secure data transmission.
 
 ---
 
@@ -141,11 +141,8 @@ cd network-event-monitor
 
 ### 2. Install Dependencies
 
-```bash id="jex6cr"
-pip install cryptography
-```
-
----
+No additional Python dependencies are required.
+Ensure OpenSSL is installed and available in the system PATH.
 
 ### 3. Generate SSL Certificate (OpenSSL)
 

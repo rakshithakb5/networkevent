@@ -1,66 +1,50 @@
-import socket
+import threading
+from secure_socket import create_secure_server_socket
+from event_processor import process_event
+from performance import log_performance
 from config import *
-from event_processor import process_event, filter_event
-import sys
-import os
+import sys, os
 
-# Import common module
 sys.path.append(os.path.abspath("../common"))
-from event_format import deserialize_event
+from protocol import decode_message
 
-clients = set()
-event_stats = {
-    "CRITICAL": 0,
-    "WARNING": 0,
-    "NORMAL": 0
-}
+clients = []
+lock = threading.Lock()
 
-def print_dashboard():
-    print("\n========== NETWORK DASHBOARD ==========")
-    print(f"Connected Clients: {len(clients)}")
-    print(f"CRITICAL: {event_stats['CRITICAL']}")
-    print(f"WARNING : {event_stats['WARNING']}")
-    print(f"NORMAL  : {event_stats['NORMAL']}")
-    print("======================================\n")
-
-def print_event(event, addr):
-    print(f"[{event['timestamp']}] {addr}")
-    print(f"Node: {event['node_id']}")
-    print(f"Type: {event['type']} → {event['class']}")
-    print(f"Message: {event['message']}")
-    print("--------------------------------------")
-
-def start_server():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind((SERVER_IP, SERVER_PORT))
-
-    print(f"🚀 Server running on {SERVER_IP}:{SERVER_PORT}")
+def handle_client(conn, addr):
+    print(f"✅ Connected: {addr}")
 
     while True:
-        data, addr = sock.recvfrom(BUFFER_SIZE)
-
         try:
-            event = deserialize_event(data)
+            data = conn.recv(1024)
 
-            # Register client
-            clients.add(addr)
+            if not data:
+                break
 
-            # Filter
-            if not filter_event(event):
-                continue
+            event = decode_message(data)
+            processed = process_event(event)
 
-            # Process
-            event = process_event(event)
+            print(f"[{addr}] → {processed}")
 
-            # Update stats
-            event_stats[event["class"]] += 1
-
-            # Display
-            print_event(event, addr)
-            print_dashboard()
+            log_performance()
 
         except Exception as e:
-            print("❌ Error:", e)
+            print(f"❌ Error with {addr}: {e}")
+            break
+
+    conn.close()
+    print(f"🔴 Disconnected: {addr}")
+
+def start_server():
+    server = create_secure_server_socket(SERVER_IP, SERVER_PORT)
+
+    print("🚀 Secure Server Running...")
+
+    while True:
+        conn, addr = server.accept()
+
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
 
 if __name__ == "__main__":
     start_server()

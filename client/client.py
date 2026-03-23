@@ -1,46 +1,30 @@
-import socket
 import time
 import random
-import sys
-import os
+from secure_socket import create_secure_client_socket
+import sys, os
 
-# Import common module
 sys.path.append(os.path.abspath("../common"))
-from event_format import create_event, serialize_event
+from protocol import encode_message
 
-SERVER_IP = "192.168.1.33"   # 🔥 CHANGE THIS
+SERVER_IP = "127.0.0.1"
 SERVER_PORT = 9999
 
-NODE_ID = f"node-{random.randint(1000,9999)}"
-
 events = [
-    ("FAILURE", "Node crashed"),
-    ("THRESHOLD", "CPU usage high"),
-    ("THRESHOLD", "Memory usage high"),
-    ("INFO", "Heartbeat OK"),
-    ("DEBUG", "Temp log")
+    {"type": "FAILURE", "msg": "Node down"},
+    {"type": "THRESHOLD", "msg": "CPU high"},
+    {"type": "INFO", "msg": "OK"}
 ]
 
-def send_events():
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    print(f"Client started → {NODE_ID}")
+def start_client():
+    sock = create_secure_client_socket(SERVER_IP, SERVER_PORT)
 
     while True:
-        event_type, message = random.choice(events)
+        event = random.choice(events)
 
-        event = create_event(event_type, message, NODE_ID)
+        sock.send(encode_message(event))
+        print("Sent:", event)
 
-        # Simulate packet loss (20%)
-        if random.random() < 0.2:
-            print("⚠️ Packet dropped (simulated)")
-            time.sleep(1)
-            continue
-
-        sock.sendto(serialize_event(event), (SERVER_IP, SERVER_PORT))
-
-        print(f"Sent: {event}")
         time.sleep(2)
 
 if __name__ == "__main__":
-    send_events()
+    start_client()

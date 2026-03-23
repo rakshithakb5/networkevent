@@ -2,26 +2,26 @@
 
 ## Overview
 
-This project presents a secure networked application developed using low-level socket programming in Python. The system simulates a distributed environment where multiple client nodes generate network-related events and transmit them to a centralized server.
+This project implements a secure networked application using low-level TCP socket programming in Python. The system simulates a distributed environment where multiple clients generate network events and send them to a centralized server.
 
-All communication between clients and the server is carried out over a secure TCP connection using SSL/TLS. The server is responsible for handling concurrent client connections, processing incoming data, classifying events, and maintaining basic performance metrics.
+All communication between clients and the server is secured using SSL/TLS. The server handles multiple concurrent client connections, processes incoming events, and maintains basic performance metrics.
 
 ---
 
 ## Objectives
 
-* Implement network communication using TCP sockets
-* Support multiple concurrent client connections
+* Implement TCP socket communication
+* Support multiple concurrent clients
 * Design a structured communication protocol
-* Ensure secure data transmission using SSL/TLS
-* Evaluate system performance under varying loads
-* Handle runtime errors and edge cases effectively
+* Ensure secure communication using SSL/TLS
+* Evaluate system performance under multiple client loads
+* Handle runtime errors and edge cases
 
 ---
 
 ## System Architecture
 
-```
+```id="2j6j6x"
 +-------------+        Secure TCP        +----------------------+
 |   Client 1  | -----------------------> |                      |
 +-------------+                          |                      |
@@ -39,7 +39,7 @@ All communication between clients and the server is carried out over a secure TC
 
 ## Project Structure
 
-```
+```id="cibsmh"
 network-event-monitor/
 │
 ├── server/
@@ -59,7 +59,6 @@ network-event-monitor/
 ├── certs/
 │   ├── server.pem
 │   ├── server.key
-│   ├── generate_cert.py
 │
 └── README.md
 ```
@@ -70,25 +69,25 @@ network-event-monitor/
 
 * Python 3
 * TCP Socket Programming
-* SSL/TLS for secure communication
-* Threading for concurrency
-* JSON for message formatting
+* SSL/TLS using OpenSSL
+* Multi-threading
+* JSON for communication protocol
 
 ---
 
 ## Security Implementation
 
-The system uses SSL/TLS to encrypt communication between clients and the server. A self-signed certificate is generated using the `cryptography` library. The server wraps its socket using an SSL context, and the client establishes a secure connection using the same protocol.
+Secure communication is implemented using SSL/TLS. The server uses a self -signed certificate and private key generated using OpenSSL to establish encrypted connections with clients. The Python `ssl` module is used to wrap sockets for secure data transmission.
 
 ---
 
 ## Communication Protocol
 
-The system uses a lightweight JSON-based protocol for data exchange.
+The system uses a JSON-based protocol for data exchange.
 
 Example message:
 
-```
+```id="9ezgtd"
 {
   "type": "FAILURE",
   "msg": "Node down"
@@ -101,11 +100,11 @@ Example message:
 
 ### Multi-Client Support
 
-The server handles multiple clients simultaneously using threading. Each client connection is processed independently.
+The server supports multiple concurrent clients using threading.
 
 ### Event Classification
 
-Incoming events are categorized into different levels:
+Events are categorized into:
 
 * FAILURE → Critical
 * THRESHOLD → Warning
@@ -113,19 +112,19 @@ Incoming events are categorized into different levels:
 
 ### Secure Communication
 
-All data transmitted between client and server is encrypted using SSL.
+All communication is encrypted using SSL/TLS.
 
 ### Performance Monitoring
 
-The server tracks request handling rate (throughput) over time.
+Basic throughput measurement is implemented on the server.
 
 ### Error Handling
 
-The system accounts for:
+Handles:
 
 * Client disconnections
-* Invalid or malformed data
-* SSL handshake failures
+* Invalid data
+* SSL handshake issues
 
 ---
 
@@ -133,7 +132,7 @@ The system accounts for:
 
 ### 1. Clone the Repository
 
-```
+```bash id="hzscvo"
 git clone <your-repository-link>
 cd network-event-monitor
 ```
@@ -142,25 +141,25 @@ cd network-event-monitor
 
 ### 2. Install Dependencies
 
-```
-pip install cryptography
+No additional Python dependencies are required.
+Ensure OpenSSL is installed and available in the system PATH.
+
+### 3. Generate SSL Certificate (OpenSSL)
+
+Run the following command inside the `certs` folder:
+
+```bash id="p1wrro"
+openssl req -new -x509 -days 365 -nodes -out server.pem -keyout server.key
 ```
 
----
-
-### 3. Generate SSL Certificate
-
-```
-cd certs
-python generate_cert.py
-```
+Provide required details when prompted.
 
 ---
 
 ### 4. Run the Server
 
-```
-cd ../server
+```bash id="f3r4u7"
+cd server
 python server.py
 ```
 
@@ -168,63 +167,55 @@ python server.py
 
 ### 5. Run Client(s)
 
-```
-cd ../client
+```bash id="31rco2"
+cd client
 python client.py
 ```
 
-Multiple clients can be run in separate terminals to simulate concurrent nodes.
+Multiple clients can be run in separate terminals or systems.
 
 ---
 
 ## Performance Evaluation
 
-| Number of Clients | Observation                          |
-| ----------------- | ------------------------------------ |
-| 1                 | Low load, stable response            |
-| 5                 | Moderate load, consistent throughput |
-| 10                | Increased load, higher CPU usage     |
+| Number of Clients | Observation              |
+| ----------------- | ------------------------ |
+| 1                 | Stable performance       |
+| 5                 | Moderate load handling   |
+| 10                | Increased resource usage |
 
 ---
 
 ## Limitations
 
-* Uses self-signed certificates instead of trusted certificate authorities
-* Command-line interface only (no graphical dashboard)
-* Basic performance metrics without detailed analysis
+* Uses self-signed SSL certificates
+* No graphical user interface
+* Basic performance analysis only
 
 ---
 
 ## Future Enhancements
 
-* Web-based monitoring dashboard
-* Persistent storage using a database
-* Retry mechanism for failed transmissions
-* Load balancing for improved scalability
+* Web-based dashboard
+* Database integration
+* Advanced performance metrics
+* Load balancing
 
 ---
 
 ## Evaluation Mapping
 
-| Requirement             | Implementation Details             |
-| ----------------------- | ---------------------------------- |
-| Socket Programming      | TCP sockets used                   |
-| Concurrency             | Multi-threaded server              |
-| Security                | SSL/TLS encryption implemented     |
-| Protocol Design         | JSON-based communication           |
-| Performance Evaluation  | Throughput measurement             |
-| Optimization & Handling | Error handling and stability fixes |
-
----
-
-## Author
-
-Rakshitha K.B
+| Requirement            | Implementation Details     |
+| ---------------------- | -------------------------- |
+| Socket Programming     | TCP sockets used           |
+| Concurrency            | Multi-threading            |
+| Security               | SSL/TLS using OpenSSL      |
+| Protocol Design        | JSON-based                 |
+| Performance Evaluation | Throughput measurement     |
+| Optimization           | Error handling implemented |
 
 ---
 
 ## Note
 
-This project is developed as part of coursework to demonstrate practical understanding of network programming, secure communication, and system design principles.
-
-
+This project is developed for academic purposes to demonstrate concepts of network communication, concurrency, and secure system design.

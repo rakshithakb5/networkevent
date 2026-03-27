@@ -3,10 +3,11 @@ import random
 from secure_socket import create_secure_client_socket
 import sys, os
 
-sys.path.append(os.path.abspath("../common"))
+# Add common module to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
 from protocol import encode_message
 
-SERVER_IP = "127.0.0.1"
+SERVER_IP = "INSERT_IP"
 SERVER_PORT = 9999
 
 events = [

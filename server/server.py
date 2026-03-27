@@ -5,7 +5,8 @@ from performance import log_performance
 from config import *
 import sys, os
 
-sys.path.append(os.path.abspath("../common"))
+# Add common module to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
 from protocol import decode_message
 
 clients = []

@@ -8,7 +8,7 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'common'))
 from protocol import encode_message
 
-SERVER_IP = "192.168.29.121"
+SERVER_IP = "SERVER_IP"
 SERVER_PORT = 9999
 
 events = [

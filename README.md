@@ -221,4 +221,4 @@ Multiple clients can be run in separate terminals or systems.
 
 ## Note
 
-This project is developed for academic purposes to demonstrate concepts of network communication, concurrency, and secure system design.
+This project is developed to demonstrate concepts of network communication, concurrency, and secure system design.

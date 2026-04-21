@@ -56,6 +56,10 @@ network-event-monitor/
 ├── common/
 │   ├── protocol.py
 │
+│── server_screenshot
+│── client_screenshot
+│── graph_analysis
+│
 ├── certs/
 │   ├── server.pem
 │   ├── server.key
